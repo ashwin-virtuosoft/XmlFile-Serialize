@@ -12,7 +12,14 @@ namespace XmlFile
     {
         static void Main(string[] args)
         {
-            SerializeObjectToXml();
+
+            //SerializeObjectToXml();  -- Just Creating xml in console
+
+            //SerializeObjectToXmlFile(); -- created in xml file in local folder
+
+            SerializeListToXmlFile();
+
+            Console.WriteLine("Completed..");
             Console.ReadLine();
         }
 
@@ -23,7 +30,8 @@ namespace XmlFile
                 Name = "Ashwin",
                 Email = "ashwin@gmail.com",
                 Age = 22,
-                JoiningDate = DateTime.Now
+                JoiningDate = DateTime.Now,
+                Password="Ask12@"
             };
 
             var xmlSerializer=new XmlSerializer(typeof(Entry));
@@ -32,6 +40,70 @@ namespace XmlFile
                 xmlSerializer.Serialize(writer, entry);
                 var xmlContent=writer.ToString();
                 Console.WriteLine(xmlContent);
+            }
+        }
+
+
+        private static void SerializeObjectToXmlFile()
+        {
+            var entry = new Entry()
+            {
+                Name = "Ashwin",
+                Email = "ashwin@gmail.com",
+                Age = 22,
+                JoiningDate = DateTime.Now,
+                Password = "Ask12@"
+            };
+
+            var xmlSerializer = new XmlSerializer(typeof(Entry));
+            using (var writer = new StreamWriter(@"C:\Users\ashwi\Desktop\Sample\Sample.xml"))
+            {
+                xmlSerializer.Serialize(writer, entry);
+            }
+
+        }
+
+        private static void SerializeListToXmlFile()
+        {
+            var entryList = new List<Entry>()
+            {
+                new Entry
+                {
+                    Name = "Ashwin",
+                    Email = "ashwin@gmail.com",
+                    Age = 22,
+                    JoiningDate = DateTime.Now,
+                    Password = "Ask12@"
+                },
+                new Entry{
+                    Name = "Vishnu",
+                    Email = "vsih@gmail.com",
+                    Age = 22,
+                    JoiningDate = DateTime.Now,
+                    Password = "Ask122@"
+                },
+                  new Entry
+                {
+                    Name = "sarath",
+                    Email = "ashwin@gmail.com",
+                    Age = 22,
+                    JoiningDate = DateTime.Now,
+                    Password = "Ask12@"
+                },
+                    new Entry
+                {
+                    Name = "Jezin",
+                    Email = "ashwin@gmail.com",
+                    Age = 22,
+                    JoiningDate = DateTime.Now,
+                    Password = "Ask12@"
+                },
+            };
+
+            var xmlSerializer = new XmlSerializer(typeof(List<Entry>));
+            using (var writer = new StreamWriter(@"C:\Users\ashwi\Desktop\Sample\Sample.xml"))
+            {
+                xmlSerializer.Serialize(writer, entryList);
             }
         }
     }
