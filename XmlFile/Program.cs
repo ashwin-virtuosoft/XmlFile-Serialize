@@ -13,17 +13,21 @@ namespace XmlFile
         static void Main(string[] args)
         {
 
-            //SerializeObjectToXml();  -- Just Creating xml in console
+            //SerializeObjectToXmlString();       -- Just Creating xml in console
 
-            //SerializeObjectToXmlFile(); -- created in xml file in local folder
+            //SerializeObjectToXmlFile();         -- created in xml file in local folder
 
-            SerializeListToXmlFile();
+            //SerializeListToXmlFile();
+
+            //DeserializeListToXmlFile();
+
+            DeserializeXmlFileToObject();
 
             Console.WriteLine("Completed..");
             Console.ReadLine();
         }
 
-        private static void SerializeObjectToXml()
+        private static void SerializeObjectToXmlString()
         {
             var entry = new Entry()
             {
@@ -31,15 +35,25 @@ namespace XmlFile
                 Email = "ashwin@gmail.com",
                 Age = 22,
                 JoiningDate = DateTime.Now,
-                Password="Ask12@"
+                Password = "Ask12@"
             };
 
-            var xmlSerializer=new XmlSerializer(typeof(Entry));
-            using(var writer=new StringWriter())
+            var xmlSerializer = new XmlSerializer(typeof(Entry));
+            using (var writer = new StringWriter())
             {
                 xmlSerializer.Serialize(writer, entry);
-                var xmlContent=writer.ToString();
+                var xmlContent = writer.ToString();
                 Console.WriteLine(xmlContent);
+                DeSerializeXmlStringToObject(xmlContent);
+            }
+        }
+
+        private static void DeSerializeXmlStringToObject(string xmlString)
+        {
+            var xmlSerilizer=new XmlSerializer(typeof(Entry));
+            using(var reader=new StringReader(xmlString))
+            {
+                var entry=(Entry)xmlSerilizer.Deserialize(reader);
             }
         }
 
@@ -56,7 +70,7 @@ namespace XmlFile
             };
 
             var xmlSerializer = new XmlSerializer(typeof(Entry));
-            using (var writer = new StreamWriter(@"C:\Users\ashwi\Desktop\Sample\Sample.xml"))
+            using (var writer = new StreamWriter(@"E:\XmlStudy\Sample1.xml"))
             {
                 xmlSerializer.Serialize(writer, entry);
             }
@@ -101,10 +115,29 @@ namespace XmlFile
             };
 
             var xmlSerializer = new XmlSerializer(typeof(List<Entry>));
-            using (var writer = new StreamWriter(@"C:\Users\ashwi\Desktop\Sample\Sample.xml"))
+            using (var writer = new StreamWriter(@"E:\XmlStudy\Sample2.xml"))
             {
                 xmlSerializer.Serialize(writer, entryList);
             }
         }
+
+        private static void DeserializeListToXmlFile()
+        {
+            var xmlSerializer = new XmlSerializer(typeof(List<Entry>));
+            using (var reader = new StreamReader(@"E:\XmlStudy\Sample2.xml"))
+            {
+                var entries = (List<Entry>)xmlSerializer.Deserialize(reader);
+            }
+        }
+
+        private static void DeserializeXmlFileToObject()
+        {
+            var xmlSerializer = new XmlSerializer(typeof(Entry));
+            using (var reader = new StreamReader(@"E:\XmlStudy\Sample1.xml"))
+            {
+                var entry = (Entry)xmlSerializer.Deserialize(reader);
+            }
+        }
+
     }
 }
